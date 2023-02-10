@@ -27,10 +27,11 @@ export default class extends Controller {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     if (this.running) {
       this.checkNeighbors();
+      this.nextGeneration();
     }
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        this.grid[x][y].draw();
+        this.grid[x][y].draw(this.context);
       }
     }
 
@@ -40,6 +41,13 @@ export default class extends Controller {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         this.grid[x][y].checkNeighbors(this.grid);
+      }
+    }
+  }
+  nextGeneration() {
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        this.grid[x][y].nextGeneration();
       }
     }
   }
@@ -66,7 +74,7 @@ export default class extends Controller {
     for (let x = 0; x < this.width; x++) {
       this.grid[x] = [];
       for (let y = 0; y < this.height; y++) {
-        this.grid[x][y] = new Cell(this.context, x, y);
+        this.grid[x][y] = new Cell(x, y);
       }
     }
   }
