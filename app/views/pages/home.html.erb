@@ -10,4 +10,14 @@
   <%= button_tag "Start", data: { action: "click->life#start" }, id: "start_button" %>
   <%= button_tag "Clear", data: { action: "click->life#clear" } %>
   <%= button_tag "Random", data: { action: "click->life#random" } %>
+  <%= select_tag "structure_type", options_for_select([
+      "Cell", 
+      "Glider", 
+      "GliderGun", 
+      "Ship", 
+      "Spaceship",
+      "Pulsar",
+      "rPentomino",
+      "Replicator" 
+    ]), data: { action: "change->life#setPlacementType" } %>
 <% end %>
