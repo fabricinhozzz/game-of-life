@@ -1,19 +1,23 @@
 export default class Cell {
   static width = 10;
   static height = 10;
-  static aliveColor = "#00FFFF";
-  static unaliveColor = "#6699CC";
+  static aliveColor = "rgba(0, 255, 255, 1)";
+  static unaliveColor = "rgba(102, 153, 204, 1)";
 
-  constructor(context, gridX, gridY, alive = false) {
-    this.context = context;
-
+  constructor(gridX, gridY, alive = false) {
     this.gridX = gridX;
     this.gridY = gridY;
     this.alive = alive;
   }
 
-  draw() {
-    this.context.fillStyle = this.alive ? Cell.aliveColor : Cell.unaliveColor;
+  draw(context) {
+    this.context = context;
+    if (this.alive) {
+      this.context.fillStyle = Cell.aliveColor;
+    } else {
+      this.context.fillStyle = Cell.unaliveColor;
+    }
+
     this.context.fillRect(
       this.gridX * Cell.width,
       this.gridY * Cell.height,
@@ -25,13 +29,16 @@ export default class Cell {
   checkNeighbors(grid) {
     const neighbors = this.getNeighbors(grid);
     const aliveNeighbors = neighbors.filter((cell) => cell.alive).length;
+
     if (this.alive) {
-      if (aliveNeighbors < 2 || aliveNeighbors > 3) {
-        this.alive = false;
+      if (aliveNeighbors === 2 || aliveNeighbors === 3) {
+        this.nextGenAlive = true;
+      } else {
+        this.nextGenAlive = false;
       }
     } else {
       if (aliveNeighbors === 3) {
-        this.alive = true;
+        this.nextGenAlive = true;
       }
     }
   }
@@ -56,5 +63,8 @@ export default class Cell {
       }
     }
     return neighbors;
+  }
+  nextGeneration() {
+    this.alive = this.nextGenAlive;
   }
 }
